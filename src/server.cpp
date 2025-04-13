@@ -7,8 +7,26 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <thread> 
 
 #define BUFFER_SIZE 1024
+
+
+void handleClient(int client_fd, sockaddr_in client_address) {
+    std::cout << "📥 Nueva conexión desde: " << inet_ntoa(client_address.sin_addr)
+              << ":" << ntohs(client_address.sin_port) << std::endl;
+
+    std::string mensaje =
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/plain\r\n"
+        "Content-Length: 22\r\n"
+        "Connection: close\r\n"
+        "\r\n"
+        "Hello from C++ server!\n";
+
+    send(client_fd, mensaje.c_str(), mensaje.length(), 0);
+    close(client_fd);
+}
 
 void startServer(int port) {
     int server_fd, client_fd;
@@ -53,19 +71,18 @@ void startServer(int port) {
 
     // 6. Aceptar una conexión (solo para prueba)
     while (true) {
-        if ((client_fd = accept(server_fd, (struct sockaddr *)&address, &addrlen)) < 0) {
+        int client_fd;
+        sockaddr_in client_address;
+        socklen_t addrlen = sizeof(client_address);
+    
+        client_fd = accept(server_fd, (struct sockaddr *)&client_address, &addrlen);
+        if (client_fd < 0) {
             perror("❌ Error al aceptar conexión");
             continue;
         }
-
-        std::cout << "📥 Cliente conectado desde: " << inet_ntoa(address.sin_addr) << ":" << ntohs(address.sin_port) << std::endl;
-
-        // Enviar mensaje de prueba
-        std::string mensaje = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 24\r\n\r\nHello from C++ server!\n";
-        send(client_fd, mensaje.c_str(), mensaje.length(), 0);
-
-        close(client_fd);  // Cerrar conexión
-    }
+        //Crea un hilo para atender al cliente y lo suelta (detach)
+        std::thread(handleClient, client_fd, client_address).detach();
+    }    
 
     close(server_fd);
 }
