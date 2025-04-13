@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.casm": "coffeescript",
+        "iostream": "cpp"
+    }
+}
