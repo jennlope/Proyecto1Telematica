@@ -26,94 +26,101 @@ std::string generarRespuestaError(int codigo, const std::string& mensaje) {
     return encabezado + cuerpo;
 }
 
+//Modificacion por error 500, antes se caia de una vez el servidor
 void handleClient(int client_fd, sockaddr_in client_address) {
-    extern std::string documentRoot; // Ruta base para los recursos
+    try {
+        extern std::string documentRoot;
 
-    std::cout << "📥 Nueva conexión desde: " << inet_ntoa(client_address.sin_addr)
-              << ":" << ntohs(client_address.sin_port) << std::endl;
+        std::cout << "📥 Nueva conexión desde: " << inet_ntoa(client_address.sin_addr)
+                  << ":" << ntohs(client_address.sin_port) << std::endl;
 
-    char buffer[BUFFER_SIZE] = {0};
-    int bytes_received = recv(client_fd, buffer, sizeof(buffer), 0);
+        char buffer[BUFFER_SIZE] = {0};
+        int bytes_received = recv(client_fd, buffer, sizeof(buffer), 0);
 
-    if (bytes_received <= 0) {
-        std::cerr << "❌ Error o conexión cerrada por el cliente." << std::endl;
-        close(client_fd);
-        return;
-    }
+        if (bytes_received <= 0) {
+            std::cerr << "❌ Error o conexión cerrada por el cliente." << std::endl;
+            close(client_fd);
+            return;
+        }
 
-    std::string requestStr(buffer);
+        std::string requestStr(buffer);
 
-    // ⚠️ Verifica que la solicitud tenga formato HTTP válido
-    if (requestStr.find("HTTP/") == std::string::npos) {
-        std::cerr << "❌ Petición malformada o vacía." << std::endl;
-        std::string respuesta = generarRespuestaError(400, "Bad Request");
+        // Validación básica de petición
+        if (requestStr.find("HTTP/") == std::string::npos) {
+            std::cerr << "❌ Petición malformada o vacía." << std::endl;
+            std::string respuesta = generarRespuestaError(400, "Bad Request");
+            send(client_fd, respuesta.c_str(), respuesta.length(), 0);
+            close(client_fd);
+            return;
+        }
+
+        HttpRequest request = HttpRequest::parse(requestStr);
+
+        std::cout << "📨 Petición: " << request.method << " " << request.path << " " << request.version << std::endl;
+
+        if (request.method != "GET" && request.method != "HEAD" && request.method != "POST") {
+            std::string respuesta = generarRespuestaError(405, "Method Not Allowed");
+            send(client_fd, respuesta.c_str(), respuesta.length(), 0);
+            close(client_fd);
+            return;
+        }
+
+        if (request.path.empty() || request.path[0] != '/') {
+            std::string respuesta = generarRespuestaError(400, "Bad Request");
+            send(client_fd, respuesta.c_str(), respuesta.length(), 0);
+            close(client_fd);
+            return;
+        }
+
+        std::string requestedPath = request.path;
+        if (requestedPath == "/") requestedPath = "/index.html";
+        std::string fullPath = documentRoot + requestedPath;
+
+        std::ifstream archivo(fullPath, std::ios::binary);
+        if (!archivo.good()) {
+            std::string respuesta = generarRespuestaError(404, "Not Found");
+            send(client_fd, respuesta.c_str(), respuesta.length(), 0);
+            close(client_fd);
+            return;
+        }
+
+        if (!archivo.is_open()) {
+            std::string respuesta = generarRespuestaError(403, "Forbidden");
+            send(client_fd, respuesta.c_str(), respuesta.length(), 0);
+            close(client_fd);
+            return;
+        }
+
+        std::string contenido((std::istreambuf_iterator<char>(archivo)), std::istreambuf_iterator<char>());
+        archivo.close();
+
+        std::string encabezado =
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/html\r\n"
+            "Content-Length: " + std::to_string(contenido.length()) + "\r\n"
+            "Connection: close\r\n\r\n";
+        std::string respuesta = encabezado;
+
+        if (request.method == "GET") {
+            respuesta += contenido;
+        }
+
         send(client_fd, respuesta.c_str(), respuesta.length(), 0);
         close(client_fd);
-        return;
-    }
 
-    HttpRequest request = HttpRequest::parse(requestStr);
-
-    std::cout << "📨 Petición: " << request.method << " " << request.path << " " << request.version << std::endl;
-
-    // Verificar si el método HTTP es válido
-    if (request.method != "GET" && request.method != "HEAD" && request.method != "POST") {
-        std::string respuesta = generarRespuestaError(405, "Method Not Allowed");
+    } catch (const std::exception& e) {
+        std::cerr << "❌ Excepción interna: " << e.what() << std::endl;
+        std::string respuesta = generarRespuestaError(500, "Internal Server Error");
         send(client_fd, respuesta.c_str(), respuesta.length(), 0);
         close(client_fd);
-        return;
-    }
-
-    // Verificar si la ruta solicitada es válida
-    if (request.path.empty() || request.path[0] != '/') {
-        std::string respuesta = generarRespuestaError(400, "Bad Request");
+    } catch (...) {
+        std::cerr << "❌ Excepción desconocida atrapada.\n";
+        std::string respuesta = generarRespuestaError(500, "Internal Server Error");
         send(client_fd, respuesta.c_str(), respuesta.length(), 0);
         close(client_fd);
-        return;
     }
-
-    // Construir la ruta completa al archivo solicitado
-    std::string requestedPath = request.path;
-    if (requestedPath == "/") requestedPath = "/index.html";
-    std::string fullPath = documentRoot + requestedPath;
-
-    // Verificar si el archivo existe y es accesible
-    std::ifstream archivo(fullPath);
-    if (!archivo.good()) {
-        std::string respuesta = generarRespuestaError(404, "Not Found");
-        send(client_fd, respuesta.c_str(), respuesta.length(), 0);
-        close(client_fd);
-        return;
-    }
-
-    // Verificar permisos de lectura
-    if (!archivo.is_open()) {
-        std::string respuesta = generarRespuestaError(403, "Forbidden");
-        send(client_fd, respuesta.c_str(), respuesta.length(), 0);
-        close(client_fd);
-        return;
-    }
-
-    // Leer el contenido del archivo
-    std::string contenido((std::istreambuf_iterator<char>(archivo)), std::istreambuf_iterator<char>());
-    archivo.close();
-
-    // Construir la respuesta HTTP
-    std::string encabezado =
-        "HTTP/1.1 200 OK\r\n"
-        "Content-Type: text/html\r\n"
-        "Content-Length: " + std::to_string(contenido.length()) + "\r\n"
-        "Connection: close\r\n\r\n";
-    std::string respuesta = encabezado;
-
-    if (request.method == "GET") {
-        respuesta += contenido;
-    }
-
-    // Enviar la respuesta al cliente
-    send(client_fd, respuesta.c_str(), respuesta.length(), 0);
-    close(client_fd);
 }
+
 
 void startServer(int port) {
     int server_fd, client_fd;
