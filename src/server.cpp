@@ -8,6 +8,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <thread> 
+#include "http_parser.h"
+
 
 #define BUFFER_SIZE 1024
 
@@ -16,17 +18,43 @@ void handleClient(int client_fd, sockaddr_in client_address) {
     std::cout << "📥 Nueva conexión desde: " << inet_ntoa(client_address.sin_addr)
               << ":" << ntohs(client_address.sin_port) << std::endl;
 
-    std::string mensaje =
+    char buffer[BUFFER_SIZE] = {0};
+    int bytes_received = recv(client_fd, buffer, sizeof(buffer), 0);
+
+    if (bytes_received <= 0) {
+        std::cerr << "❌ Error o conexión cerrada por el cliente." << std::endl;
+        close(client_fd);
+        return;
+    }
+
+    std::string requestStr(buffer);
+    HttpRequest request = HttpRequest::parse(requestStr);
+
+    std::cout << "📨 Petición: " << request.method << " " << request.path << " " << request.version << std::endl;
+
+    std::string cuerpo;
+
+    if (request.method == "GET" || request.method == "HEAD") {
+        cuerpo = "Respuesta básica para " + request.method + " " + request.path + "\n";
+    } else if (request.method == "POST") {
+        cuerpo = "Se recibió un POST a " + request.path + "\n";
+    } else {
+        cuerpo = "Método no soportado\n";
+    }
+
+    std::string header =
         "HTTP/1.1 200 OK\r\n"
         "Content-Type: text/plain\r\n"
-        "Content-Length: 22\r\n"
+        "Content-Length: " + std::to_string(cuerpo.length()) + "\r\n"
         "Connection: close\r\n"
-        "\r\n"
-        "Hello from C++ server!\n";
+        "\r\n";
+
+    std::string mensaje = header + cuerpo;
 
     send(client_fd, mensaje.c_str(), mensaje.length(), 0);
     close(client_fd);
 }
+
 
 void startServer(int port) {
     int server_fd, client_fd;

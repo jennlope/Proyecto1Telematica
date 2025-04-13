@@ -1,8 +1,8 @@
 # Makefile
 
 CXX = g++
-CXXFLAGS = -Wall -std=c++17
-SRC = src/server.cpp
+CXXFLAGS = -Wall -std=c++17 -Iinclude
+SRC = src/server.cpp src/http_parser.cpp
 OUT = server
 
 all:
