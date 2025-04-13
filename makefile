@@ -1,8 +1,8 @@
-# Makefile
+# Makefile - Compilador
 
 CXX = g++
-CXXFLAGS = -Wall -std=c++17 -Iinclude
-SRC = src/server.cpp src/http_parser.cpp
+CXXFLAGS = -Wall -std=c++20 -Iinclude
+SRC = src/server.cpp src/http_parser.cpp src/file_server.cpp
 OUT = server
 
 all:

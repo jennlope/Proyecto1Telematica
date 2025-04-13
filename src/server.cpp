@@ -1,20 +1,22 @@
-// src/server.cpp
-
+#include "http_parser.h"
+#include "file_server.h"
+#include <filesystem>
 #include <iostream>
 #include <cstring>
 #include <string>
 #include <cstdlib>
+#include <thread>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <thread> 
-#include "http_parser.h"
+
 
 
 #define BUFFER_SIZE 1024
 
-
 void handleClient(int client_fd, sockaddr_in client_address) {
+    extern std::string documentRoot;
+
     std::cout << "📥 Nueva conexión desde: " << inet_ntoa(client_address.sin_addr)
               << ":" << ntohs(client_address.sin_port) << std::endl;
 
@@ -32,28 +34,50 @@ void handleClient(int client_fd, sockaddr_in client_address) {
 
     std::cout << "📨 Petición: " << request.method << " " << request.path << " " << request.version << std::endl;
 
-    std::string cuerpo;
+    // Rutas
+    std::string requestedPath = request.path;
+    if (requestedPath == "/") requestedPath = "/index.html";
+    std::string fullPath = documentRoot + requestedPath;
+
+    std::string contenido;
+    std::string contentType = FileServer::getMimeType(fullPath);
+    std::string header, mensaje;
 
     if (request.method == "GET" || request.method == "HEAD") {
-        cuerpo = "Respuesta básica para " + request.method + " " + request.path + "\n";
-    } else if (request.method == "POST") {
-        cuerpo = "Se recibió un POST a " + request.path + "\n";
+        if (FileServer::readFile(fullPath, contenido)) {
+            header =
+                "HTTP/1.1 200 OK\r\n"
+                "Content-Type: " + contentType + "\r\n"
+                "Content-Length: " + std::to_string(contenido.length()) + "\r\n"
+                "Connection: close\r\n\r\n";
+
+            mensaje = header;
+            if (request.method == "GET") {
+                mensaje += contenido;
+            }
+        } else {
+            std::string notFound = "<h1>404 Not Found</h1>";
+            header =
+                "HTTP/1.1 404 Not Found\r\n"
+                "Content-Type: text/html\r\n"
+                "Content-Length: " + std::to_string(notFound.length()) + "\r\n"
+                "Connection: close\r\n\r\n";
+            mensaje = header + notFound;
+        }
     } else {
-        cuerpo = "Método no soportado\n";
+        std::string notAllowed = "<h1>405 Method Not Allowed</h1>";
+        header =
+            "HTTP/1.1 405 Method Not Allowed\r\n"
+            "Content-Type: text/html\r\n"
+            "Content-Length: " + std::to_string(notAllowed.length()) + "\r\n"
+            "Connection: close\r\n\r\n";
+        mensaje = header + notAllowed;
     }
-
-    std::string header =
-        "HTTP/1.1 200 OK\r\n"
-        "Content-Type: text/plain\r\n"
-        "Content-Length: " + std::to_string(cuerpo.length()) + "\r\n"
-        "Connection: close\r\n"
-        "\r\n";
-
-    std::string mensaje = header + cuerpo;
 
     send(client_fd, mensaje.c_str(), mensaje.length(), 0);
     close(client_fd);
 }
+
 
 
 void startServer(int port) {
@@ -108,13 +132,17 @@ void startServer(int port) {
             perror("❌ Error al aceptar conexión");
             continue;
         }
-        //Crea un hilo para atender al cliente y lo suelta (detach)
+    
+        // Crea un hilo para atender al cliente y lo suelta (detach)
         std::thread(handleClient, client_fd, client_address).detach();
-    }    
+    }
+    
 
     close(server_fd);
 }
  
+std::string documentRoot; // Ruta base para los recursos
+
 int main(int argc, char* argv[]) {
     if (argc != 4) {
         std::cerr << "Uso: " << argv[0] << " <PUERTO> <LOG_FILE> <DOCUMENT_ROOT>\n";
@@ -124,6 +152,8 @@ int main(int argc, char* argv[]) {
     int port = std::stoi(argv[1]);
     std::string logFile = argv[2];
     std::string rootFolder = argv[3];
+
+    documentRoot = rootFolder;
 
     startServer(port);
 
