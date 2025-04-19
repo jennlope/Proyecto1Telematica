@@ -10,6 +10,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <fstream>
+#include <ctime>
+#include <mutex>
 
 #define BUFFER_SIZE 1024
 
@@ -26,14 +28,36 @@ std::string generarRespuestaError(int codigo, const std::string& mensaje) {
     return encabezado + cuerpo;
 }
 
+std::string logFilePath;
+std::mutex logMutex;
+
+void registrarLog(const std::string& ip, const std::string& metodo, const std::string& ruta, int codigo) {
+    std::lock_guard<std::mutex> lock(logMutex);  // Para evitar conflicto entre hilos
+
+    std::ofstream logFile(logFilePath, std::ios::app);
+    if (!logFile.is_open()) return;
+
+    // Obtener hora actual
+    std::time_t now = std::time(nullptr);
+    char tiempo[100];
+    std::strftime(tiempo, sizeof(tiempo), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+
+    logFile << "[" << tiempo << "] "
+            << ip << " "
+            << metodo << " " << ruta << " -> "
+            << codigo << std::endl;
+
+    logFile.close();
+}
+
 //Modificacion por error 500, antes se caia de una vez el servidor
 void handleClient(int client_fd, sockaddr_in client_address) {
+    extern std::string documentRoot;
+
+    std::cout << "📥 Nueva conexión desde: " << inet_ntoa(client_address.sin_addr)
+              << ":" << ntohs(client_address.sin_port) << std::endl;
+
     try {
-        extern std::string documentRoot;
-
-        std::cout << "📥 Nueva conexión desde: " << inet_ntoa(client_address.sin_addr)
-                  << ":" << ntohs(client_address.sin_port) << std::endl;
-
         char buffer[BUFFER_SIZE] = {0};
         int bytes_received = recv(client_fd, buffer, sizeof(buffer), 0);
 
@@ -47,8 +71,8 @@ void handleClient(int client_fd, sockaddr_in client_address) {
 
         // Validación básica de petición
         if (requestStr.find("HTTP/") == std::string::npos) {
-            std::cerr << "❌ Petición malformada o vacía." << std::endl;
             std::string respuesta = generarRespuestaError(400, "Bad Request");
+            registrarLog(inet_ntoa(client_address.sin_addr), "UNKNOWN", "INVALID", 400);
             send(client_fd, respuesta.c_str(), respuesta.length(), 0);
             close(client_fd);
             return;
@@ -58,8 +82,10 @@ void handleClient(int client_fd, sockaddr_in client_address) {
 
         std::cout << "📨 Petición: " << request.method << " " << request.path << " " << request.version << std::endl;
 
-        if (request.method != "GET" && request.method != "HEAD" && request.method != "POST") {
-            std::string respuesta = generarRespuestaError(405, "Method Not Allowed");
+        // Solo permitimos GET y HEAD, todo lo demás es 400
+        if (request.method != "GET" && request.method != "HEAD") {
+            std::string respuesta = generarRespuestaError(400, "Bad Request");
+            registrarLog(inet_ntoa(client_address.sin_addr), request.method, request.path, 400);
             send(client_fd, respuesta.c_str(), respuesta.length(), 0);
             close(client_fd);
             return;
@@ -67,25 +93,24 @@ void handleClient(int client_fd, sockaddr_in client_address) {
 
         if (request.path.empty() || request.path[0] != '/') {
             std::string respuesta = generarRespuestaError(400, "Bad Request");
+            registrarLog(inet_ntoa(client_address.sin_addr), request.method, "INVALID_PATH", 400);
             send(client_fd, respuesta.c_str(), respuesta.length(), 0);
             close(client_fd);
             return;
         }
 
-        std::string requestedPath = request.path;
-        if (requestedPath == "/") requestedPath = "/index.html";
-        std::string fullPath = documentRoot + requestedPath;
+        std::string requestedPath = (request.path == "/") ? "/index.html" : request.path;
+
+        std::string fullPath = documentRoot;
+        if (fullPath.back() == '/' && requestedPath.front() == '/') {
+            fullPath.pop_back();
+        }
+        fullPath += requestedPath;
 
         std::ifstream archivo(fullPath, std::ios::binary);
-        if (!archivo.good()) {
-            std::string respuesta = generarRespuestaError(404, "Not Found");
-            send(client_fd, respuesta.c_str(), respuesta.length(), 0);
-            close(client_fd);
-            return;
-        }
-
         if (!archivo.is_open()) {
-            std::string respuesta = generarRespuestaError(403, "Forbidden");
+            std::string respuesta = generarRespuestaError(404, "Not Found");
+            registrarLog(inet_ntoa(client_address.sin_addr), request.method, request.path, 404);
             send(client_fd, respuesta.c_str(), respuesta.length(), 0);
             close(client_fd);
             return;
@@ -99,27 +124,23 @@ void handleClient(int client_fd, sockaddr_in client_address) {
             "Content-Type: text/html\r\n"
             "Content-Length: " + std::to_string(contenido.length()) + "\r\n"
             "Connection: close\r\n\r\n";
-        std::string respuesta = encabezado;
 
+        std::string respuesta = encabezado;
         if (request.method == "GET") {
             respuesta += contenido;
         }
-
+        registrarLog(inet_ntoa(client_address.sin_addr), request.method, request.path, 200);
         send(client_fd, respuesta.c_str(), respuesta.length(), 0);
         close(client_fd);
 
-    } catch (const std::exception& e) {
-        std::cerr << "❌ Excepción interna: " << e.what() << std::endl;
-        std::string respuesta = generarRespuestaError(500, "Internal Server Error");
-        send(client_fd, respuesta.c_str(), respuesta.length(), 0);
-        close(client_fd);
     } catch (...) {
-        std::cerr << "❌ Excepción desconocida atrapada.\n";
-        std::string respuesta = generarRespuestaError(500, "Internal Server Error");
+        std::string respuesta = generarRespuestaError(400, "Bad Request");
+        registrarLog(inet_ntoa(client_address.sin_addr), "EXCEPTION", "UNKNOWN", 400);
         send(client_fd, respuesta.c_str(), respuesta.length(), 0);
         close(client_fd);
     }
 }
+
 
 
 void startServer(int port) {
@@ -182,6 +203,7 @@ int main(int argc, char* argv[]) {
     std::string logFile = argv[2];
     std::string rootFolder = argv[3];
 
+    logFilePath = logFile;
     documentRoot = rootFolder;
 
     startServer(port);
