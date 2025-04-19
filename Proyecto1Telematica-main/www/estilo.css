@@ -1,0 +1,33 @@
+/* www/estilo.css */
+body {
+    font-family: sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    line-height: 1.6;
+    margin: 20px;
+}
+
+h1, h2 {
+    color: #0056b3;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+}
+
+img, video {
+    display: block;
+    margin-top: 10px;
+    max-width: 100%; /* Para responsividad */
+    height: auto;   /* Para mantener proporción */
+}
+
+a {
+    color: #0066cc;
+}
+a:hover {
+    color: #004080;
+}

@@ -1,0 +1,133 @@
+[2025-04-14 18:39:32] 📝 Log iniciado. Escribiendo a consola y a logs.txt
+[2025-04-14 18:39:32] 📂 DocumentRoot verificado y establecido en: www
+[2025-04-14 18:39:32] ✅ Servidor escuchando en el puerto 8080...
+[2025-04-14 18:39:36] 📥 Nueva conexión desde: 127.0.0.1:47216
+[2025-04-14 18:39:36] 📨 Petición recibida (127.0.0.1:47216): GET / HTTP/1.1
+[2025-04-14 18:39:36] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/html, 107 bytes) a 127.0.0.1:47216
+[2025-04-14 18:39:36] 🔌 Conexión cerrada con 127.0.0.1:47216
+[2025-04-14 18:39:36] 📥 Nueva conexión desde: 127.0.0.1:47222
+[2025-04-14 18:41:00] 📝 Log iniciado. Escribiendo a consola y a logs.txt
+[2025-04-14 18:41:00] 📂 DocumentRoot verificado y establecido en: www
+[2025-04-14 18:41:00] ✅ Servidor escuchando en el puerto 8080...
+[2025-04-14 18:41:10] 📥 Nueva conexión desde: 127.0.0.1:38302
+[2025-04-14 18:41:10] 📨 Petición recibida (127.0.0.1:38302): GET / HTTP/1.1
+[2025-04-14 18:41:10] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/html, 107 bytes) a 127.0.0.1:38302
+[2025-04-14 18:41:10] 🔌 Conexión cerrada con 127.0.0.1:38302
+[2025-04-14 18:41:10] 📥 Nueva conexión desde: 127.0.0.1:38312
+[2025-04-14 18:45:17] 🔌 Conexión cerrada por el cliente antes de enviar datos (127.0.0.1:38312)
+[2025-04-14 18:51:47] 📝 Log iniciado. Escribiendo a consola y a logs.txt
+[2025-04-14 18:51:47] 📂 DocumentRoot verificado y establecido en: www
+[2025-04-14 18:51:47] ✅ Servidor escuchando en el puerto 8080...
+[2025-04-14 18:51:50] 📥 Nueva conexión desde: 127.0.0.1:34558
+[2025-04-14 18:51:50] 📨 Petición recibida (127.0.0.1:34558): GET / HTTP/1.1
+[2025-04-14 18:51:50] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/html, 107 bytes) a 127.0.0.1:34558
+[2025-04-14 18:51:50] 🔌 Conexión cerrada con 127.0.0.1:34558
+[2025-04-14 18:51:50] 📥 Nueva conexión desde: 127.0.0.1:34574
+[2025-04-14 18:55:08] 🔌 Conexión cerrada por el cliente antes de enviar datos (127.0.0.1:34574)
+[2025-04-14 19:37:49] 📝 Log iniciado. Escribiendo a consola y a logs.txt
+[2025-04-14 19:37:49] 📂 DocumentRoot verificado y establecido en: www
+[2025-04-14 19:37:49] ✅ Servidor escuchando en el puerto 8080...
+[2025-04-14 19:37:52] 📥 Nueva conexión desde: 127.0.0.1:47648
+[2025-04-14 19:37:52] 📨 Petición recibida (127.0.0.1:47648): GET / HTTP/1.1
+[2025-04-14 19:37:52] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/html, 1877 bytes) a 127.0.0.1:47648
+[2025-04-14 19:37:52] 🔌 Conexión cerrada con 127.0.0.1:47648
+[2025-04-14 19:37:52] 📥 Nueva conexión desde: 127.0.0.1:47664
+[2025-04-14 19:37:52] 📨 Petición recibida (127.0.0.1:47664): GET /estilo.css HTTP/1.1
+[2025-04-14 19:37:52] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/css, 475 bytes) a 127.0.0.1:47664
+[2025-04-14 19:37:52] 🔌 Conexión cerrada con 127.0.0.1:47664
+[2025-04-14 19:37:52] 📥 Nueva conexión desde: 127.0.0.1:47678
+[2025-04-14 19:37:52] 📨 Petición recibida (127.0.0.1:47678): GET /imagen.jpg HTTP/1.1
+[2025-04-14 19:37:52] 📥 Nueva conexión desde: 127.0.0.1:47694
+[2025-04-14 19:37:52] 📨 Petición recibida (127.0.0.1:47694): GET /script.js HTTP/1.1
+[2025-04-14 19:37:52] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/javascript, 578 bytes) a 127.0.0.1:47694
+[2025-04-14 19:37:52] 🔌 Conexión cerrada con 127.0.0.1:47694
+[2025-04-14 19:37:52] 📥 Nueva conexión desde: 127.0.0.1:47696
+[2025-04-14 19:37:52] 📨 Petición recibida (127.0.0.1:47696): GET /video.mp4 HTTP/1.1
+[2025-04-14 19:37:52] 📥 Nueva conexión desde: 127.0.0.1:47708
+[2025-04-14 19:37:52] 📬 Respuesta enviada: HTTP/1.1 200 OK (image/jpeg, 747366 bytes) a 127.0.0.1:47678
+[2025-04-14 19:37:52] 🔌 Conexión cerrada con 127.0.0.1:47678
+[2025-04-14 19:37:53] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/octet-stream, 21455238 bytes) a 127.0.0.1:47696
+[2025-04-14 19:38:10] ⚠️ Advertencia: Respuesta enviada parcialmente (19154599/21455342 bytes) a 127.0.0.1:47696
+[2025-04-14 19:38:10] 🔌 Conexión cerrada con 127.0.0.1:47696
+[2025-04-14 19:38:32] 📨 Petición recibida (127.0.0.1:47708): GET /pagina_inexistente.html HTTP/1.1
+[2025-04-14 19:38:32] ❌ Recurso no encontrado (404): www/pagina_inexistente.html (127.0.0.1:47708)
+[2025-04-14 19:38:32] 📬 Respuesta enviada: HTTP/1.1 404 Not Found
+[2025-04-14 19:38:32] 🔌 Conexión cerrada con 127.0.0.1:47708
+[2025-04-14 19:38:40] 📥 Nueva conexión desde: 127.0.0.1:50518
+[2025-04-14 19:38:40] 📨 Petición recibida (127.0.0.1:50518): GET / HTTP/1.1
+[2025-04-14 19:38:40] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/html, 1877 bytes) a 127.0.0.1:50518
+[2025-04-14 19:38:40] 🔌 Conexión cerrada con 127.0.0.1:50518
+[2025-04-14 19:38:41] 📥 Nueva conexión desde: 127.0.0.1:50520
+[2025-04-14 19:38:41] 📨 Petición recibida (127.0.0.1:50520): GET /estilo.css HTTP/1.1
+[2025-04-14 19:38:41] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/css, 475 bytes) a 127.0.0.1:50520
+[2025-04-14 19:38:41] 🔌 Conexión cerrada con 127.0.0.1:50520
+[2025-04-14 19:38:41] 📥 Nueva conexión desde: 127.0.0.1:50526
+[2025-04-14 19:38:41] 📥 Nueva conexión desde: 127.0.0.1:50534
+[2025-04-14 19:38:41] 📨 Petición recibida (127.0.0.1:50526): GET /script.js HTTP/1.1
+[2025-04-14 19:38:41] 📨 Petición recibida (127.0.0.1:50534): GET /imagen.jpg HTTP/1.1
+[2025-04-14 19:38:41] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/javascript, 578 bytes) a 127.0.0.1:50526
+[2025-04-14 19:38:41] 🔌 Conexión cerrada con 127.0.0.1:50526
+[2025-04-14 19:38:41] 📥 Nueva conexión desde: 127.0.0.1:50544
+[2025-04-14 19:38:41] 📨 Petición recibida (127.0.0.1:50544): GET /video.mp4 HTTP/1.1
+[2025-04-14 19:38:41] 📥 Nueva conexión desde: 127.0.0.1:50556
+[2025-04-14 19:38:41] 📬 Respuesta enviada: HTTP/1.1 200 OK (image/jpeg, 747366 bytes) a 127.0.0.1:50534
+[2025-04-14 19:38:41] 🔌 Conexión cerrada con 127.0.0.1:50534
+[2025-04-14 19:38:42] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/octet-stream, 21455238 bytes) a 127.0.0.1:50544
+[2025-04-14 19:38:45] 🔌 Conexión cerrada con 127.0.0.1:50544
+[2025-04-14 19:39:09] 📨 Petición recibida (127.0.0.1:50556): GET /archivo_grande.zip HTTP/1.1
+[2025-04-14 19:39:09] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/octet-stream, 1175537 bytes) a 127.0.0.1:50556
+[2025-04-14 19:39:09] 🔌 Conexión cerrada con 127.0.0.1:50556
+[2025-04-14 19:40:47] 📝 Log iniciado. Escribiendo a consola y a logs.txt
+[2025-04-14 19:40:47] 📂 DocumentRoot verificado y establecido en: www
+[2025-04-14 19:40:47] ✅ Servidor escuchando en el puerto 8080...
+[2025-04-14 19:40:48] 📥 Nueva conexión desde: 127.0.0.1:37658
+[2025-04-14 19:40:48] 📨 Petición recibida (127.0.0.1:37658): GET / HTTP/1.1
+[2025-04-14 19:40:48] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/html, 1617 bytes) a 127.0.0.1:37658
+[2025-04-14 19:40:48] 🔌 Conexión cerrada con 127.0.0.1:37658
+[2025-04-14 19:40:49] 📥 Nueva conexión desde: 127.0.0.1:37666
+[2025-04-14 19:40:49] 📨 Petición recibida (127.0.0.1:37666): GET /estilo.css HTTP/1.1
+[2025-04-14 19:40:49] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/css, 475 bytes) a 127.0.0.1:37666
+[2025-04-14 19:40:49] 🔌 Conexión cerrada con 127.0.0.1:37666
+[2025-04-14 19:40:49] 📥 Nueva conexión desde: 127.0.0.1:37682
+[2025-04-14 19:40:49] 📥 Nueva conexión desde: 127.0.0.1:37684
+[2025-04-14 19:40:49] 📨 Petición recibida (127.0.0.1:37682): GET /imagen.jpg HTTP/1.1
+[2025-04-14 19:40:49] 📨 Petición recibida (127.0.0.1:37684): GET /script.js HTTP/1.1
+[2025-04-14 19:40:49] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/javascript, 578 bytes) a 127.0.0.1:37684
+[2025-04-14 19:40:49] 🔌 Conexión cerrada con 127.0.0.1:37684
+[2025-04-14 19:40:49] 📥 Nueva conexión desde: 127.0.0.1:37686
+[2025-04-14 19:40:49] 📨 Petición recibida (127.0.0.1:37686): GET /video.mp4 HTTP/1.1
+[2025-04-14 19:40:49] 📬 Respuesta enviada: HTTP/1.1 200 OK (image/jpeg, 747366 bytes) a 127.0.0.1:37682
+[2025-04-14 19:40:49] 🔌 Conexión cerrada con 127.0.0.1:37682
+[2025-04-14 19:40:49] 📥 Nueva conexión desde: 127.0.0.1:37688
+[2025-04-14 19:40:50] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/octet-stream, 21455238 bytes) a 127.0.0.1:37686
+[2025-04-14 19:41:04] ⚠️ Advertencia: Respuesta enviada parcialmente (18237837/21455342 bytes) a 127.0.0.1:37686
+[2025-04-14 19:41:04] 🔌 Conexión cerrada con 127.0.0.1:37686
+[2025-04-14 19:45:07] 🔌 Conexión cerrada por el cliente antes de enviar datos (127.0.0.1:37688)
+[2025-04-14 19:46:17] 📝 Log iniciado. Escribiendo a consola y a logs.txt
+[2025-04-14 19:46:17] 📂 DocumentRoot verificado y establecido en: www
+[2025-04-14 19:46:17] ✅ Servidor escuchando en el puerto 8080...
+[2025-04-14 19:46:23] 📥 Nueva conexión desde: 127.0.0.1:42820
+[2025-04-14 19:46:23] 📨 Petición recibida (127.0.0.1:42820): GET / HTTP/1.1
+[2025-04-14 19:46:23] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/html, 1617 bytes) a 127.0.0.1:42820
+[2025-04-14 19:46:23] 🔌 Conexión cerrada con 127.0.0.1:42820
+[2025-04-14 19:46:23] 📥 Nueva conexión desde: 127.0.0.1:42828
+[2025-04-14 19:46:23] 📨 Petición recibida (127.0.0.1:42828): GET /estilo.css HTTP/1.1
+[2025-04-14 19:46:23] 📬 Respuesta enviada: HTTP/1.1 200 OK (text/css, 475 bytes) a 127.0.0.1:42828
+[2025-04-14 19:46:23] 🔌 Conexión cerrada con 127.0.0.1:42828
+[2025-04-14 19:46:23] 📥 Nueva conexión desde: 127.0.0.1:42844
+[2025-04-14 19:46:23] 📨 Petición recibida (127.0.0.1:42844): GET /imagen.jpg HTTP/1.1
+[2025-04-14 19:46:23] 📥 Nueva conexión desde: 127.0.0.1:42860
+[2025-04-14 19:46:23] 📨 Petición recibida (127.0.0.1:42860): GET /script.js HTTP/1.1
+[2025-04-14 19:46:23] 📬 Respuesta enviada: HTTP/1.1 200 OK (application/javascript, 578 bytes) a 127.0.0.1:42860
+[2025-04-14 19:46:23] 🔌 Conexión cerrada con 127.0.0.1:42860
+[2025-04-14 19:46:23] 📥 Nueva conexión desde: 127.0.0.1:42872
+[2025-04-14 19:46:23] 📨 Petición recibida (127.0.0.1:42872): GET /video.mp4 HTTP/1.1
+[2025-04-14 19:46:23] 📥 Nueva conexión desde: 127.0.0.1:42886
+[2025-04-14 19:46:23] 📬 Respuesta enviada: HTTP/1.1 200 OK (image/jpeg, 747366 bytes) a 127.0.0.1:42844
+[2025-04-14 19:46:23] 🔌 Conexión cerrada con 127.0.0.1:42844
+[2025-04-14 19:46:24] 📬 Respuesta enviada: HTTP/1.1 200 OK (video/mp4, 21455238 bytes) a 127.0.0.1:42872
+[2025-04-14 19:46:39] ⚠️ Advertencia: Respuesta enviada parcialmente (16797211/21455327 bytes) a 127.0.0.1:42872
+[2025-04-14 19:46:39] 🔌 Conexión cerrada con 127.0.0.1:42872
+[2025-04-14 19:46:53] 📨 Petición recibida (127.0.0.1:42886): GET /video.mp4 HTTP/1.1
+[2025-04-14 19:46:54] 📬 Respuesta enviada: HTTP/1.1 200 OK (video/mp4, 21455238 bytes) a 127.0.0.1:42886
+[2025-04-14 19:46:54] 🔌 Conexión cerrada con 127.0.0.1:42886

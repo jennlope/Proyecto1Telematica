@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servidor Web C++ - Pruebas</title>
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+    <h1>Pruebas del Servidor Web en C++</h1>
+
+    <p>Esta página se utiliza para probar las capacidades del servidor HTTP implementado.</p>
+
+    <hr>
+
+    <h2>Caso 1 y 3: Hipertextos e Imagen</h2>
+    <p>A continuación se muestran algunos enlaces y una imagen:</p>
+    <ul>
+        <li><a href="https://www.google.com" target="_blank">Enlace Externo (Google)</a></li>
+        <li><a href="/pagina_inexistente.html">Enlace Interno (Debería dar 404)</a></li>
+        <li><a href="/">Enlace a la página principal</a></li>
+    </ul>
+    <img src="imagen.jpg" alt="Imagen de prueba" width="300">
+
+    <hr>
+
+    <h2>Caso 2: Video Pequeño</h2>
+    <p>A continuación se muestra un video corto:</p>
+    <video width="320" height="240" controls>
+        <source src="video.mp4" type="video/mp4">
+        Tu navegador no soporta la etiqueta de video.
+    </video>
+
+    <hr>
+
+    <h2>Caso 4: Archivo Grande (~1MB)</h2>
+    <p>Haz clic en el siguiente enlace para descargar un archivo de prueba de aproximadamente 1MB.</p>
+    <p><a href="archivo_grande.zip" download>Descargar Archivo Grande (ZIP)</a></p>
+
+    <hr>
+
+    <h2>Caso 3: Script Externo</h2>
+    <p>Este párrafo debería cambiar por un script si Javascript está habilitado y el archivo .js se carga.</p>
+    <p id="mensaje-script">Esperando script...</p>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
