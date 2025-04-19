@@ -1,0 +1,10 @@
+[2025-04-19 17:00:31] 127.0.0.1 GET /prueba1/index.html -> 200
+[2025-04-19 17:00:31] 127.0.0.1 GET /prueba1/imagen.jpg -> 200
+[2025-04-19 17:00:32] 127.0.0.1 GET /favicon.ico -> 404
+[2025-04-19 17:05:23] 127.0.0.1 GET /prueba3/index.html -> 200
+[2025-04-19 17:05:23] 127.0.0.1 GET /prueba3/styles.css -> 200
+[2025-04-19 17:05:24] 127.0.0.1 GET /prueba3/script.js -> 200
+[2025-04-19 17:05:24] 127.0.0.1 GET /prueba3/imagen.jpg -> 200
+[2025-04-19 17:09:56] 127.0.0.1 GET /prueba4/archivo.txt -> 200
+[2025-04-19 17:15:47] 127.0.0.1 GET /prueba2/index.html -> 200
+[2025-04-19 17:15:48] 127.0.0.1 GET /prueba2/video.mp4 -> 200
