@@ -50,7 +50,7 @@ void registrarLog(const std::string& ip, const std::string& metodo, const std::s
     logFile.close();
 }
 
-//Modificacion por error 500, antes se caia de una vez el servidor
+
 void handleClient(int client_fd, sockaddr_in client_address) {
     extern std::string documentRoot;
 
@@ -82,8 +82,8 @@ void handleClient(int client_fd, sockaddr_in client_address) {
 
         std::cout << "📨 Petición: " << request.method << " " << request.path << " " << request.version << std::endl;
 
-        // Solo permitimos GET y HEAD, todo lo demás es 400
-        if (request.method != "GET" && request.method != "HEAD") {
+        // Solo permitimos GET , HEAD Y POST, todo lo demás es 400
+        if (request.method != "GET" && request.method != "HEAD" && request.method != "POST") {
             std::string respuesta = generarRespuestaError(400, "Bad Request");
             registrarLog(inet_ntoa(client_address.sin_addr), request.method, request.path, 400);
             send(client_fd, respuesta.c_str(), respuesta.length(), 0);
@@ -118,6 +118,29 @@ void handleClient(int client_fd, sockaddr_in client_address) {
 
         std::string contenido((std::istreambuf_iterator<char>(archivo)), std::istreambuf_iterator<char>());
         archivo.close();
+
+        // Si el método es POST, extrae el cuerpo y lo muestra
+        if (request.method == "POST") {
+            // Encuentra inicio del cuerpo (después del doble salto de línea)
+            size_t header_end = requestStr.find("\r\n\r\n");
+            if (header_end != std::string::npos && header_end + 4 < requestStr.length()) {
+                std::string cuerpo = requestStr.substr(header_end + 4);
+                std::cout << "📦 Cuerpo recibido por POST:\n" << cuerpo << std::endl;
+            }
+
+            std::string mensaje =
+                "HTTP/1.1 200 OK\r\n"
+                "Content-Type: text/plain\r\n"
+                "Content-Length: 26\r\n"
+                "Connection: close\r\n\r\n"
+                "POST recibido correctamente.\n";
+
+            send(client_fd, mensaje.c_str(), mensaje.length(), 0);
+            registrarLog(inet_ntoa(client_address.sin_addr), request.method, request.path, 200);
+            close(client_fd);
+            return;
+        }
+
 
         std::string encabezado =
             "HTTP/1.1 200 OK\r\n"
