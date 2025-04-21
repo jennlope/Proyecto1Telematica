@@ -125,6 +125,12 @@ Contiene archivos accesibles por navegador:
 - Se logró el despliegue en la nube (AWS EC2) y su vinculación con un subdominio gratuito usando No-IP.
 - Quedan como futuras mejoras: soporte de métodos POST completos, manejo de MIME types, y seguridad.
 
+### **Evidencias fotograficas**
+![image](https://github.com/user-attachments/assets/5f218097-620f-4426-9dba-6abe7e66a519)
+![image](https://github.com/user-attachments/assets/df1211c9-8464-4aa6-b6ad-393e50621d42)
+![image](https://github.com/user-attachments/assets/a6990387-e095-483c-b896-9d4bfc842909)
+
+
 ---
 
 ## **4. Referencias**
