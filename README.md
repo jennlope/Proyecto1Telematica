@@ -129,7 +129,12 @@ Contiene archivos accesibles por navegador:
 ![image](https://github.com/user-attachments/assets/5f218097-620f-4426-9dba-6abe7e66a519)
 ![image](https://github.com/user-attachments/assets/df1211c9-8464-4aa6-b6ad-393e50621d42)
 ![image](https://github.com/user-attachments/assets/a6990387-e095-483c-b896-9d4bfc842909)
-
+![image](https://github.com/user-attachments/assets/20a05c2a-f0f8-4ed9-a4bc-80f14cbbecf9)
+![image](https://github.com/user-attachments/assets/4744c8dc-7127-40ec-a2fb-dfc39ef419ec)
+![image](https://github.com/user-attachments/assets/66b4c8cb-0186-4011-bab4-058a2faaafd0)
+![image](https://github.com/user-attachments/assets/4c7b3081-59be-4d11-9a63-8421bba456a4)
+![image](https://github.com/user-attachments/assets/2fa7c104-e0f1-4719-9916-3b063aaeab68)
+![image](https://github.com/user-attachments/assets/b6f67fdd-aed8-403b-a68e-b8c978f3f2ce)
 
 ---
 
